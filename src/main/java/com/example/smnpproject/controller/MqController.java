@@ -30,11 +30,12 @@ public class MqController {
     public String doProduce() {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
-        try(Connection connection = factory.newConnection();
-            Channel channel = connection.createChannel()) {
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        try(Connection connection = factory.newConnection();  // 建立连接
+            Channel channel = connection.createChannel()) { // 创建信道
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null); // 声明队列
             String message = "hello world ---- test";
             // 第一个参数是交换机  为空则说明是匿名转发
+            // 发送消息
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
             log.info("Producer send: {}", message);
         } catch (TimeoutException | IOException e) {
@@ -59,7 +60,7 @@ public class MqController {
             System.out.println("message===内容是" + message);
         };
         // 监听队列
-        channel.basicConsume(QUEUE_NAME, true, declared, consumer -> {});
+        channel.basicConsume(QUEUE_NAME, true, declared, consumer -> {}); // 消费消息
         return connection.toString();
     }
 }
