@@ -102,4 +102,8 @@ public class FairWorkQueueController {
         channel.basicConsume(QUEUE_NAME, autoAck, deliverCallback, consumerTag -> { });
         return "ok";
     }
+
+    public String test() {
+        return "测试数据aa";
+    }
 }
